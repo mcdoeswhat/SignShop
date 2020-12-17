@@ -5,7 +5,7 @@ import me.albert.signshop.listeners.ShopCreate;
 import me.albert.signshop.listeners.ShopGUIClick;
 import me.albert.signshop.listeners.ShopInteract;
 import me.albert.signshop.listeners.ShopPurchase;
-import me.albert.signshop.taks.CrateRenderTask;
+import me.albert.signshop.taks.ShopGUIRenderTask;
 import me.albert.signshop.utils.ShopDestroyCache;
 import net.milkbowl.vault.economy.Economy;
 import org.black_ixx.playerpoints.PlayerPoints;
@@ -50,7 +50,7 @@ public class SignShop extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new ShopGUIClick(), this);
         getServer().getPluginManager().registerEvents(new ShopPurchase(), this);
         getLogger().info("Loaded");
-        CrateRenderTask.start();
+        ShopGUIRenderTask.start();
     }
 
     @Override

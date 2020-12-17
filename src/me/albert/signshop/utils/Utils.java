@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Utils {
@@ -37,6 +38,28 @@ public class Utils {
     public static int getItemAmount(Inventory inventory, ItemStack itemStack) {
         int amount = 0;
         for (ItemStack item : inventory) {
+            if (item != null && item.isSimilar(itemStack)) {
+                amount += item.getAmount();
+            }
+
+        }
+        return amount;
+    }
+
+    public static int getItemAmount(Inventory inventory) {
+        int amount = 0;
+        for (ItemStack item : inventory) {
+            if (item != null && item.getType() != Material.AIR) {
+                amount += item.getAmount();
+            }
+
+        }
+        return amount;
+    }
+
+    public static int getItemAmount(List<ItemStack> items, ItemStack itemStack) {
+        int amount = 0;
+        for (ItemStack item : items) {
             if (item != null && item.isSimilar(itemStack)) {
                 amount += item.getAmount();
             }

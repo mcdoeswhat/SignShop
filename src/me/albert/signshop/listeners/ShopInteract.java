@@ -22,7 +22,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -41,7 +40,7 @@ public class ShopInteract implements Listener {
 
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
-        event.getPlayer().removeMetadata("sign_shop_crate", SignShop.instance);
+        event.getPlayer().removeMetadata("sign_shop_opening", SignShop.instance);
 
     }
 
@@ -87,7 +86,7 @@ public class ShopInteract implements Listener {
         //使用商店
         if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             //出售商店
-            Inventory inventory = Bukkit.createInventory(new ShopUseHolder(shop, Arrays.asList(container.getInventory().getContents())), 27, "§3§l商店预览");
+            Inventory inventory = Bukkit.createInventory(new ShopUseHolder(shop, container.getInventory()), 27, "§3§l商店预览");
             for (int i = 0; i < inventory.getSize(); i++) {
                 inventory.setItem(i, new ItemStack(Material.BLUE_STAINED_GLASS_PANE));
             }
@@ -97,7 +96,7 @@ public class ShopInteract implements Listener {
                     player.sendMessage("§c商店主人还尚未设置此商店出售的物品.....");
                     return;
                 }
-                if (container.getInventory().isEmpty()) {
+                if (container.getInventory().isEmpty() || Utils.getItemAmount(container.getInventory(), shop.getShopItem()) == 0) {
                     player.sendMessage("§c商店库存已空...");
                     return;
                 }
@@ -107,6 +106,7 @@ public class ShopInteract implements Listener {
                         , "§a商店库存: §e" + Utils.getItemAmount(container.getInventory(), shop.getShopItem()), "§a点击购买1个", "§7右键购买自定义数量");
                 inventory.setItem(22, info);
                 player.openInventory(inventory);
+                player.setMetadata("sign_shop_opening", new FixedMetadataValue(SignShop.instance, true));
                 return;
             }
             if (shop.getShopType().equals(ShopType.BUY)) {
@@ -125,6 +125,7 @@ public class ShopInteract implements Listener {
                         , "§a点击出售1个", "§7Shift+左键出售背包所有");
                 inventory.setItem(22, info);
                 player.openInventory(inventory);
+                player.setMetadata("sign_shop_opening", new FixedMetadataValue(SignShop.instance, true));
                 return;
             }
             if (shop.getShopType().equals(ShopType.CRATE)) {
@@ -134,10 +135,10 @@ public class ShopInteract implements Listener {
                 }
                 ItemStack info = ItemUtil.make(Material.GOLD_NUGGET, "§6§l抽奖商店",
                         "§a单个物品价格: §e" + Utils.format(shop.getPrice()) + " " + shop.getPriceType().getName()
-                        , "§a出售商店内的随机物品", "§7点击购买");
+                        , "§a出售商店内的随机物品", "§a商店库存: §e" + Utils.getItemAmount(container.getInventory()), "§7点击购买");
                 inventory.setItem(22, info);
                 player.openInventory(inventory);
-                player.setMetadata("sign_shop_crate", new FixedMetadataValue(SignShop.instance, true));
+                player.setMetadata("sign_shop_opening", new FixedMetadataValue(SignShop.instance, true));
             }
 
         }

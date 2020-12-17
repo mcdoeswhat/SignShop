@@ -3,11 +3,11 @@ package me.albert.signshop.listeners;
 import me.albert.signshop.SignShop;
 import me.albert.signshop.events.ShopPurchaseEvent;
 import me.albert.signshop.gui.ShopUseHolder;
-import me.albert.signshop.utils.GUIUtil;
-import me.albert.signshop.utils.Shop;
-import me.albert.signshop.utils.ShopType;
-import me.albert.signshop.utils.Utils;
+import me.albert.signshop.utils.*;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.Container;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -68,11 +68,30 @@ public class ShopGUIClick implements Listener {
             Shop shop = shopUseHolder.getShop();
             int slot = event.getSlot();
             if (slot == event.getClickedInventory().getSize() - 5) {
+                Block attache = Utils.getAttache(shop.getSign().getBlock());
+                if (attache == null || !(attache.getState() instanceof Container)) {
+                    player.sendMessage("§c错误! 商店方块并非容器,无法使用商店");
+                    return;
+                }
                 ShopPurchaseEvent purchaseEvent = null;
                 boolean clicked = false;
                 if (event.getClick().equals(ClickType.LEFT)) {
                     purchaseEvent = shop.purchase(player, 1);
                     clicked = true;
+                    if (shop.getShopType().equals(ShopType.SELL)) {
+                        Container container = (Container) attache.getState();
+                        ItemStack info = ItemUtil.make(Material.GOLD_NUGGET, "§b§l出售商店",
+                                "§a单个物品价格: §e" + Utils.format(shop.getPrice()) + " " + shop.getPriceType().getName()
+                                , "§a商店库存: §e" + Utils.getItemAmount(container.getInventory(), shop.getShopItem()), "§a点击购买1个", "§7右键购买自定义数量");
+                        event.getClickedInventory().setItem(22, info);
+                    }
+                    if (shop.getShopType().equals(ShopType.CRATE)) {
+                        Container container = (Container) attache.getState();
+                        ItemStack info = ItemUtil.make(Material.GOLD_NUGGET, "§6§l抽奖商店",
+                                "§a单个物品价格: §e" + Utils.format(shop.getPrice()) + " " + shop.getPriceType().getName()
+                                , "§a出售商店内的随机物品", "§a商店库存: §e" + Utils.getItemAmount(container.getInventory()), "§7点击购买");
+                        event.getClickedInventory().setItem(22, info);
+                    }
                 }
                 ItemStack shopItem = shop.getShopItem();
                 if (shopItem != null) {
@@ -80,7 +99,7 @@ public class ShopGUIClick implements Listener {
                         if (event.getClick().equals(ClickType.SHIFT_LEFT)) {
                             int itemAmount = Utils.getItemAmount(player.getInventory(), shopItem);
                             if (itemAmount == 0) {
-                                player.sendMessage("§c你的背包一个没有发现任何对应的收购物品!");
+                                player.sendMessage("§c你的背包没有发现任何对应的收购物品!");
                                 player.closeInventory();
                                 return;
                             }
