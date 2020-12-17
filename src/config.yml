@@ -1,0 +1,7 @@
+tax: 0.03
+create: "shop"
+debug: false
+enable_sounds: true
+blocks:
+  - CHEST
+  - BARREL
