@@ -90,7 +90,7 @@ public class ShopPurchase implements Listener {
                 return;
             }
             user.playSound(user.getLocation(), Sound.ENTITY_ITEM_FRAME_REMOVE_ITEM, 1, 0.1f);
-            owner.getPlayer().playSound(user.getLocation(), Sound.ENTITY_ITEM_FRAME_REMOVE_ITEM, 1, 0.1f);
+            owner.getPlayer().playSound(owner.getPlayer().getLocation(), Sound.ENTITY_ITEM_FRAME_REMOVE_ITEM, 1, 0.1f);
         } catch (Exception e) {
             if (SignShop.instance.getConfig().getBoolean("debug")) {
                 e.printStackTrace();
