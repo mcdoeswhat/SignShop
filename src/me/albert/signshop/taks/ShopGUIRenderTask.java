@@ -75,6 +75,12 @@ public class ShopGUIRenderTask {
                                 , "§a商店库存: §e" + store, "§a点击购买1个", "§7右键购买自定义数量");
                         inventory.setItem(22, info);
                     }
+                    if (holder.getShop().getShopType().equals(ShopType.BUY)) {
+                        ItemStack info = ItemUtil.make(Material.GOLD_NUGGET, "§2§l收购商店",
+                                "§a单个物品价格: §e" + Utils.format(shop.getPrice()) + " " + shop.getPriceType().getName()
+                                , "§a剩余空间: §e" + Utils.getEmptySlots(holder.getContainer()) + " §a格", "§a点击出售1个", "§7Shift+左键出售背包所有");
+                        inventory.setItem(22, info);
+                    }
                 }
             } catch (Exception e) {
                 if (SignShop.instance.getConfig().getBoolean("debug")) {

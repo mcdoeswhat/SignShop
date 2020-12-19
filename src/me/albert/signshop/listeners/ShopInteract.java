@@ -122,7 +122,7 @@ public class ShopInteract implements Listener {
                 inventory.setItem(13, sellItem);
                 ItemStack info = ItemUtil.make(Material.GOLD_NUGGET, "§2§l收购商店",
                         "§a单个物品价格: §e" + Utils.format(shop.getPrice()) + " " + shop.getPriceType().getName()
-                        , "§a点击出售1个", "§7Shift+左键出售背包所有");
+                        ,"§a剩余空间: §e"+Utils.getEmptySlots(container.getInventory())+" §a格", "§a点击出售1个", "§7Shift+左键出售背包所有");
                 inventory.setItem(22, info);
                 player.openInventory(inventory);
                 player.setMetadata("sign_shop_opening", new FixedMetadataValue(SignShop.instance, true));

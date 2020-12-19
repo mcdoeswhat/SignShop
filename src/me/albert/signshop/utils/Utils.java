@@ -105,7 +105,7 @@ public class Utils {
         return getEmptySlots(inventory) >= slots;
     }
 
-    private static int getEmptySlots(Inventory inventory) {
+    public static int getEmptySlots(Inventory inventory) {
         int amount = 0;
         for (int i = 0; i < inventory.getSize(); i++) {
             ItemStack is = inventory.getItem(i);

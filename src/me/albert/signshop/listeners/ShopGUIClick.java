@@ -73,23 +73,28 @@ public class ShopGUIClick implements Listener {
                     player.sendMessage("§c错误! 商店方块并非容器,无法使用商店");
                     return;
                 }
+                Container container = (Container) attache.getState();
                 ShopPurchaseEvent purchaseEvent = null;
                 boolean clicked = false;
                 if (event.getClick().equals(ClickType.LEFT)) {
                     purchaseEvent = shop.purchase(player, 1);
                     clicked = true;
                     if (shop.getShopType().equals(ShopType.SELL)) {
-                        Container container = (Container) attache.getState();
                         ItemStack info = ItemUtil.make(Material.GOLD_NUGGET, "§b§l出售商店",
                                 "§a单个物品价格: §e" + Utils.format(shop.getPrice()) + " " + shop.getPriceType().getName()
                                 , "§a商店库存: §e" + Utils.getItemAmount(container.getInventory(), shop.getShopItem()), "§a点击购买1个", "§7右键购买自定义数量");
                         event.getClickedInventory().setItem(22, info);
                     }
                     if (shop.getShopType().equals(ShopType.CRATE)) {
-                        Container container = (Container) attache.getState();
                         ItemStack info = ItemUtil.make(Material.GOLD_NUGGET, "§6§l抽奖商店",
                                 "§a单个物品价格: §e" + Utils.format(shop.getPrice()) + " " + shop.getPriceType().getName()
                                 , "§a出售商店内的随机物品", "§a商店库存: §e" + Utils.getItemAmount(container.getInventory()), "§7点击购买");
+                        event.getClickedInventory().setItem(22, info);
+                    }
+                    if (shop.getShopType().equals(ShopType.BUY)) {
+                        ItemStack info = ItemUtil.make(Material.GOLD_NUGGET, "§2§l收购商店",
+                                "§a单个物品价格: §e" + Utils.format(shop.getPrice()) + " " + shop.getPriceType().getName()
+                                , "§a剩余空间: §e" + Utils.getEmptySlots(container.getInventory()) + " §a格", "§a点击出售1个", "§7Shift+左键出售背包所有");
                         event.getClickedInventory().setItem(22, info);
                     }
                 }
@@ -102,6 +107,10 @@ public class ShopGUIClick implements Listener {
                                 player.sendMessage("§c你的背包没有发现任何对应的收购物品!");
                                 player.closeInventory();
                                 return;
+                            }
+                            int maxAmount = Utils.getEmptySlots(container.getInventory()) * shopItem.getMaxStackSize();
+                            if (itemAmount > maxAmount) {
+                                itemAmount = maxAmount;
                             }
                             purchaseEvent = shop.purchase(player, itemAmount);
                             clicked = true;
