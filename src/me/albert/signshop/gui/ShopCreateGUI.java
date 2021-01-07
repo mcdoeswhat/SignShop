@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.AtomicDouble;
 import me.albert.signshop.SignShop;
 import me.albert.signshop.utils.*;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -29,7 +30,8 @@ public class ShopCreateGUI implements Listener {
     public static ConcurrentHashMap<UUID, Inventory> setPrices = new ConcurrentHashMap<>();
 
     public static void main(String[] args) {
-        System.out.println(Integer.MAX_VALUE - 1 + 1);
+
+        System.out.println(Math.random());
 
     }
 

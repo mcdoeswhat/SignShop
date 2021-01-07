@@ -17,6 +17,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 
 public class ShopPurchase implements Listener {
 
@@ -44,42 +45,42 @@ public class ShopPurchase implements Listener {
         String shopUUID = ShopDestroyCache.putShop(shop);
         if (shop.getShopType().equals(ShopType.SELL)) {
             TextComponent component = new TextComponent("§a你从" + owner.getName() + "的商店里买走了: §e" + event.getAmount() + " X ");
-            component.addExtra(new TranslatableComponent(MessageUtil.getItemNamePath(event.getItem())));
+            addItem(component, event.getItem());
             component.addExtra("§a 花费: §e" + cost + shop.getPriceType().getName());
             user.sendMessage(component);
             if (owner.isOnline()) {
                 component = new TextComponent("§a" + user.getName() + "从你的");
                 component.addExtra(getShopInfo(shop, shopUUID));
                 component.addExtra("§a里买走了: §e" + event.getAmount() + " X ");
-                component.addExtra(new TranslatableComponent(MessageUtil.getItemNamePath(event.getItem())));
+                addItem(component, event.getItem());
                 component.addExtra("§a 你赚取了: §e" + afterTax + shop.getPriceType().getName() + "§7(税后)");
                 owner.getPlayer().sendMessage(component);
             }
         }
         if (shop.getShopType().equals(ShopType.BUY)) {
             TextComponent component = new TextComponent("§a你向" + owner.getName() + "的商店里出售了: §e" + event.getAmount() + " X ");
-            component.addExtra(new TranslatableComponent(MessageUtil.getItemNamePath(event.getItem())));
+            addItem(component, event.getItem());
             component.addExtra("§a 赚取了: §e" + afterTax + shop.getPriceType().getName() + "§7(税后)");
             user.sendMessage(component);
             if (owner.isOnline()) {
                 component = new TextComponent("§a" + user.getName() + "向你的");
                 component.addExtra(getShopInfo(shop, shopUUID));
                 component.addExtra("§a里出售了: §e" + event.getAmount() + " X ");
-                component.addExtra(new TranslatableComponent(MessageUtil.getItemNamePath(event.getItem())));
+                addItem(component, event.getItem());
                 component.addExtra("§a 从你的账户里扣除了: §e" + afterTax + shop.getPriceType().getName());
                 owner.getPlayer().sendMessage(component);
             }
         }
         if (shop.getShopType().equals(ShopType.CRATE)) {
             TextComponent component = new TextComponent("§a你在" + owner.getName() + "的商店里抽中了: §e");
-            component.addExtra(new TranslatableComponent(MessageUtil.getItemNamePath(event.getItem())));
+            addItem(component, event.getItem());
             component.addExtra("§a 花费: §e" + cost + shop.getPriceType().getName());
             user.sendMessage(component);
             if (owner.isOnline()) {
                 component = new TextComponent("§a" + user.getName() + "在你的");
                 component.addExtra(getShopInfo(shop, shopUUID));
                 component.addExtra("§a里抽中了: §e" + event.getAmount() + " X ");
-                component.addExtra(new TranslatableComponent(MessageUtil.getItemNamePath(event.getItem())));
+                addItem(component, event.getItem());
                 component.addExtra("§a 你赚取了: §e" + afterTax + shop.getPriceType().getName() + "§7(税后)");
                 owner.getPlayer().sendMessage(component);
             }
@@ -97,6 +98,15 @@ public class ShopPurchase implements Listener {
             }
         }
 
+
+    }
+
+    public static void addItem(TextComponent component, ItemStack item) {
+        if (item.hasDisplayName()) {
+            component.addExtra(item.getDisplayName());
+        } else {
+            component.addExtra(new TranslatableComponent(MessageUtil.getItemNamePath(item)));
+        }
 
     }
 }
