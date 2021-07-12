@@ -67,7 +67,7 @@ public class ShopPurchase implements Listener {
                 component.addExtra(getShopInfo(shop, shopUUID));
                 component.addExtra("§a里出售了: §e" + event.getAmount() + " X ");
                 addItem(component, event.getItem());
-                component.addExtra("§a 从你的账户里扣除了: §e" + afterTax + shop.getPriceType().getName());
+                component.addExtra("§a 从你的账户里扣除了: §e" + cost + shop.getPriceType().getName());
                 owner.getPlayer().sendMessage(component);
             }
         }
