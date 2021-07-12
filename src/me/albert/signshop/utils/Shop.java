@@ -158,7 +158,7 @@ public class Shop {
             player.sendMessage("§c您的" + priceType.getName() + "余额不足! 需要: " + cost + priceType.getName() + " 您拥有" + balance + priceType.getName());
             return null;
         }
-        double afterTax = Math.round((cost - (cost * SignShop.tax))*100.00)/100.00;
+        double afterTax = Math.round((cost - (cost * SignShop.tax)) * 100.00) / 100.00;
         if (priceType == PriceType.MONEY) {
             if (shopType == ShopType.BUY) {
                 SignShop.getEconomy().withdrawPlayer(owner, cost);

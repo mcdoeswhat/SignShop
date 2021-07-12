@@ -102,7 +102,7 @@ public class ShopPurchase implements Listener {
     }
 
     public static void addItem(TextComponent component, ItemStack item) {
-        if (item.hasDisplayName()) {
+        if (item.getItemMeta().hasDisplayName()) {
             component.addExtra(item.getDisplayName());
         } else {
             component.addExtra(new TranslatableComponent(MessageUtil.getItemNamePath(item)));
