@@ -107,8 +107,7 @@ public class Utils {
 
     public static int getEmptySlots(Inventory inventory) {
         int amount = 0;
-        for (int i = 0; i < inventory.getSize(); i++) {
-            ItemStack is = inventory.getItem(i);
+        for (ItemStack is : inventory.getStorageContents()) {
             if (is == null || is.getType() == Material.AIR) {
                 amount++;
             }
