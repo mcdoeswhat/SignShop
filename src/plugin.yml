@@ -1,0 +1,8 @@
+name: SignShop
+version: 1.0.7
+api-version: 1.13
+main: me.albert.signshop.SignShop
+softdepend: [Vault,PlayerPoints]
+commands:
+  signshop:
+    aliases: [ss]
